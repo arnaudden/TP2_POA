@@ -1,4 +1,4 @@
-
+import javax.vecmath.Vector2d;
 
 /**
  * Classe qui gère la gestion de la nourriture
@@ -7,4 +7,14 @@
  */
 public class Nourriture {
 
+	private Vector2d position;
+
+	
+	public Nourriture(Vector2d pos)
+	{
+		position = pos;
+	}
+	
+	
+	
 }
