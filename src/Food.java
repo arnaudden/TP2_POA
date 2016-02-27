@@ -5,12 +5,12 @@ import javax.vecmath.Vector2d;
  * @author Arnaud
  *
  */
-public class Nourriture {
+public class Food {
 
 	private Vector2d position;
 
 	
-	public Nourriture(Vector2d pos)
+	public Food(Vector2d pos)
 	{
 		position = pos;
 	}

@@ -13,7 +13,6 @@ public class Pigeon extends Thread {
 
 	private String name;
 	
-	
 	private Vector2D position;
 	
 	private Vector2D vitesse;
@@ -34,7 +33,6 @@ public class Pigeon extends Thread {
 	{
 		name = nm;
 		position = pos;
-		vitesse = vit;
 		masse = 1;
 		maxSpeed = 10;
 		
