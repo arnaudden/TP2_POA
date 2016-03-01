@@ -9,7 +9,7 @@ import javax.vecmath.Vector2d;
  * @author Arnaud
  *
  */
-public class Pigeon extends Thread {
+public class Pigeon extends Thread{
 
 	private String name;
 	

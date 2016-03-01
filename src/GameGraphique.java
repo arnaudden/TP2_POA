@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -120,6 +121,10 @@ public class GameGraphique implements MouseListener {
 	public void addPigeonOnScreen()
 	{
 		System.out.println("Clique sur add Pigeon");
+		int x = 10 + (int)(Math.random() * ((100 - 10) + 1));
+		int y = 10 + (int)(Math.random() * ((100 - 10) + 1));
+		
+		Pigeon pigeon = new Pigeon( namePigeonTF.getText(), new Vector2D( x, y), new Vector2D( 0, 0));
 	}
 	
 	public void addFoodOnScreen()
