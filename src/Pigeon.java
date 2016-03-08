@@ -1,5 +1,9 @@
 
 
+
+
+import java.awt.Image;
+
 import javax.vecmath.Vector2d;
 
 
@@ -21,6 +25,10 @@ public class Pigeon extends Thread{
 	
 	private double maxSpeed;
 	
+	private boolean isMoving;
+	
+	private int foodEaten;
+	
 	
 	public Pigeon()
 	{
@@ -29,12 +37,14 @@ public class Pigeon extends Thread{
 	
 
 
-	public Pigeon(String nm, Vector2D pos, Vector2D vit)
+	public Pigeon(String nm, Vector2D pos)
 	{
 		name = nm;
 		position = pos;
 		masse = 1;
 		maxSpeed = 10;
+		isMoving = false;
+		foodEaten = 0;
 		
 	}
 	
