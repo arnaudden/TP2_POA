@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.vecmath.Vector2d;
 
 
 
@@ -37,6 +39,8 @@ public class GameGraphique implements MouseListener {
 	private Font fontPrincipal;
 	
 	private ArrayList<Pigeon> listPigeon;
+	
+	private ArrayList<Food> listFood;
 	
 	public GameGraphique()
 	{
@@ -89,7 +93,7 @@ public class GameGraphique implements MouseListener {
 		
 		if(e.getSource() == gameCanvas)
 		{
-			addFoodOnScreen();
+			addFoodOnScreen( e.getX(), e.getY());
 		}
 	}
 
@@ -127,9 +131,11 @@ public class GameGraphique implements MouseListener {
 		Pigeon pigeon = new Pigeon( namePigeonTF.getText(), new Vector2D( x, y), new Vector2D( 0, 0));
 	}
 	
-	public void addFoodOnScreen()
+	public void addFoodOnScreen( int x, int y)
 	
 	{
-		System.out.println("Clique n'importe où");
+		Food newPain = new Food( new Vector2d( x, y), LocalTime.now());
+		newPain.draw( gameCanvas);
+		listFood.add( newPain);
 	}
 }
