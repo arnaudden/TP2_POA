@@ -1,37 +1,35 @@
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 public class DisplayPigeon extends JPanel {
 
 	
-	
-	
 	private BufferedImage imagePigeonRest;
+	private BufferedImage imagePain;
+	private BufferedImage imagePainMoisi;
 	
 	private ArrayList<Pigeon> listPigeon;
+	private ArrayList<Food> listFood;
 	
 	
 	public DisplayPigeon()
 	{
 		listPigeon = new ArrayList<Pigeon>();
+		listFood = new ArrayList<Food>();
 		
 	    try
 	    {               
 	      imagePigeonRest = ImageIO.read(new File("pictures/pigeon_repos.png"));
+	      imagePain = ImageIO.read(new File("pictures/Pain.png"));
+	      imagePainMoisi = ImageIO.read( new File("pictures/PainMoisi.png"));
 	    }
 	    catch (IOException e)
 	    {
@@ -46,13 +44,44 @@ public class DisplayPigeon extends JPanel {
 		repaint();
 	}
 	
+	public void addFood(Food pain)
+	{
+		listFood.add(pain);
+		repaint();
+	}
+	
+	public Food getFreshest()
+	{
+		Food freshBread = null;
+		LocalTime previousTime = null;
+		LocalTime currentTime;
+		for( int i = 0; i <listFood.size(); i++)
+		{	
+			currentTime = listFood.get(i).getFoodAge();
+			if( previousTime == null)
+				previousTime = currentTime;
+			else if( ChronoUnit.SECONDS.between( previousTime, currentTime) > 0)
+			{
+				previousTime = currentTime;
+				freshBread = listFood.get(i);
+			}
+		}
+		
+		return freshBread;
+	}
+	
+	public ArrayList<Food> getList()
+	{
+		return listFood;
+	}
+	
 	@Override
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
 		if(listPigeon.isEmpty())
 		{
-			System.out.println("Liste de pigeon vide");
+			//System.out.println("Liste de pigeon vide");
 		}
 		else
 		{
@@ -63,6 +92,21 @@ public class DisplayPigeon extends JPanel {
 			}
 		}
 		
+		if(listFood.isEmpty())
+		{}
+			//System.out.println("Pas de pain");
+		else
+		{
+			for( int i=0; i<listFood.size(); i++)
+			{	
+				Food pain = listFood.get( i);	
+				if( ChronoUnit.SECONDS.between(pain.getFoodAge(), LocalTime.now()) < 10) // Elapsed Seconds to know if a bread is rotten or not
+					g.drawImage( imagePain, (int)pain.getPosition().dX, (int)pain.getPosition().dY, null);
+				else
+					g.drawImage( imagePainMoisi, (int)pain.getPosition().dX, (int)pain.getPosition().dY, null);
+			}
+		}
+		getFreshest();
 		repaint();
 	}
 	

@@ -1,9 +1,3 @@
-
-
-
-
-import java.awt.Image;
-
 import javax.vecmath.Vector2d;
 
 
@@ -35,8 +29,6 @@ public class Pigeon extends Thread{
 		
 	}
 	
-
-
 	public Pigeon(String nm, Vector2D pos)
 	{
 		name = nm;

@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -94,7 +95,7 @@ public class GameGraphique implements MouseListener {
 		
 		if(e.getSource() == gamePanel)
 		{
-			addFoodOnScreen();
+			addFoodOnScreen( e.getX(), e.getY());
 		}
 	}
 
@@ -139,11 +140,28 @@ public class GameGraphique implements MouseListener {
 		
 	}
 	
-	public void addFoodOnScreen()
-	
+	public void addFoodOnScreen( int x, int y)
 	{
-		System.out.println("Clique n'importe où");
+	/*	Vector2D posNew = new Vector2D(x-35,y-35);
+		Vector2D posNeutral = posNew;
+		ArrayList<Food> listF= gamePanel.getList();
+		if( listF.size() != 0)
+		{
+			for( int i = 0; i < listF.size(); i++)
+			{
+				if(  posNew.sub(listF.get(i).getPosition()).length() > 50)
+				{
+					Food food = new Food( posNeutral, LocalTime.now());
+					gamePanel.addFood( food);
+				}
+				posNew = posNeutral;
+			}
+		}
+		else
+		{*/
+			Food food = new Food( new Vector2D( x-35, y-35), LocalTime.now());
+			gamePanel.addFood( food);
+		//}
 	}
-	
 	
 }
