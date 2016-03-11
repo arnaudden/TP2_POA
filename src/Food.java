@@ -1,4 +1,4 @@
-import java.awt.image.BufferedImage;
+
 import java.time.LocalTime;
 
 
@@ -9,15 +9,26 @@ import java.time.LocalTime;
  */
 public class Food {
 
-	BufferedImage img = null;
 	private Vector2D position;
 	private LocalTime foodAge;
+	private boolean moisi;
 
 	
 	public Food(Vector2D pos, LocalTime currentTime)
 	{
 		position = pos;
 		foodAge = currentTime;
+		moisi = false;
+	}
+
+	public boolean isMoisi() 
+	{
+		return moisi;
+	}
+
+	public void setMoisi(boolean moisi) 
+	{
+		this.moisi = moisi;
 	}
 
 	public LocalTime getFoodAge()

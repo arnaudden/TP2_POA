@@ -13,7 +13,7 @@ public class Pigeon extends Thread{
 	
 	private Vector2D position;
 	
-	private Vector2D vitesse;
+	private Vector2D velocity;
 	
 	private double masse;
 	
@@ -23,6 +23,14 @@ public class Pigeon extends Thread{
 	
 	private int foodEaten;
 	
+	private SteeringBehavior steering;
+	
+	private Vector2D targetPos;
+	
+	private double m_TimeElapsed;
+	
+	private double distToTarget;
+    private Vector2D v_distToTarget;
 	
 	public Pigeon()
 	{
@@ -33,18 +41,114 @@ public class Pigeon extends Thread{
 	{
 		name = nm;
 		position = pos;
-		masse = 1;
+		velocity = new Vector2D();
+		masse = 10;
 		maxSpeed = 10;
 		isMoving = false;
 		foodEaten = 0;
-		
+		steering = new SteeringBehavior(this);
 	}
 	
 	public void run()
 	{
+	
+		 long lastTimeFPS = System.currentTimeMillis();
+	     long lastTime = System.nanoTime();
+	     double unprocessed = 0;
+	        
+	     double framerate = 60;
+	     double nsPerTick = 1000000000.0 / framerate;
+	     boolean shouldRender = false;
+	     double nbTick=0;
+	     
+	     
+		
+		while(true)
+		{
+			shouldRender = false;
+			 // TP1 : Gestion des ticks
+        	unprocessed+=(System.nanoTime() - lastTime) / nsPerTick;
+        	lastTime = System.nanoTime();
+        	
+        	
+        	for(double i=1; i<unprocessed;i++ )
+        	{
+        		unprocessed--;
+        		nbTick++;
+        		shouldRender=true;
+        		//System.out.println(nbTick);
+        		
+        	}
+        	
+        	double timeFPS =  System.currentTimeMillis() - lastTimeFPS;
+        	if (timeFPS > 1000)
+        	{
+        		System.out.println("PigeonGame FPS : " + nbTick);
+        		
+        		lastTimeFPS = System.currentTimeMillis();
+        		nbTick = 0;
+        	}
+        	
+        	if (shouldRender)
+        	{
+        		if (!isMoving)
+    			{
+    				System.out.println("Le pigeon " + name + " est au repos");
+    			}
+    			else if (isMoving)
+    			{
+    				double time = timeFPS / 1000;
+    				update(time);
+    				eatFood();
+    				
+    			}
+        	}
+			
+			
+			// Delay processing
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+		}
 		
 	}
 	
+	public void eatFood()
+	{
+		distToTarget = 0;
+	    v_distToTarget = new Vector2D();
+		v_distToTarget = targetPos.sub(position);
+		distToTarget = v_distToTarget.length();
+		System.out.println("Distance to target = " + distToTarget);
+		if(distToTarget < 30)
+		{
+			isMoving = false;
+			velocity.Reinitialize();
+		}
+	}
+	
+	public void update(double timeElapsed)
+	{
+		m_TimeElapsed = timeElapsed;
+		
+		Vector2D oldPos = position;
+		System.out.println("timeElaps = " + m_TimeElapsed);
+		Vector2D steeringForce = steering.seek(targetPos);
+		System.out.println("force = " + steeringForce);
+		
+		// Acceleration
+		Vector2D acceleration = steeringForce.scale(1/masse);
+		System.out.println("acc = " + acceleration);
+		velocity = velocity.add(acceleration.scale(m_TimeElapsed));
+		System.out.println("vit = " + velocity);
+		velocity.truncate(maxSpeed);
+		System.out.println("vit = " + velocity);
+		position = position.add(velocity.scale(m_TimeElapsed));
+		
+		System.out.println(position);
+	}
 	
 	public String getPigeonName ()
 	{
@@ -52,19 +156,45 @@ public class Pigeon extends Thread{
 	}
 	
 
-	public Vector2D getPosition() {
+	public Vector2D getPosition() 
+	{
 		return position;
 	}
 
-	public Vector2D getVitesse() {
-		return vitesse;
+	public Vector2D getVitesse() 
+	{
+		return velocity;
 	}
 
-	public double getMasse() {
+	public double getMasse() 
+	{
 		return masse;
 	}
 	
-	public double getMaxSpeed() {
+	public double getMaxSpeed() 
+	{
 		return maxSpeed;
 	}
+	
+	public void setIsMoving(boolean move)
+	{
+		isMoving = move;
+	}
+
+	public Vector2D getTargetPos() 
+	{
+		return targetPos;
+	}
+
+	public void setTargetPos(Vector2D targetPos) 
+	{
+		this.targetPos = targetPos;
+	}
+
+	public double getDistToTarget() 
+	{
+		return distToTarget;
+	}
+	
+	
 }

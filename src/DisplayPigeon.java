@@ -79,10 +79,12 @@ public class DisplayPigeon extends JPanel {
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+		
 		if(listPigeon.isEmpty())
 		{
-			//System.out.println("Liste de pigeon vide");
+			
 		}
+		
 		else
 		{
 			for(int i=0; i<listPigeon.size(); i++)
@@ -92,6 +94,7 @@ public class DisplayPigeon extends JPanel {
 			}
 		}
 		
+		
 		if(listFood.isEmpty())
 		{}
 			//System.out.println("Pas de pain");
@@ -99,15 +102,24 @@ public class DisplayPigeon extends JPanel {
 		{
 			for( int i=0; i<listFood.size(); i++)
 			{	
-				Food pain = listFood.get( i);	
+				Food pain = listFood.get(i);	
 				if( ChronoUnit.SECONDS.between(pain.getFoodAge(), LocalTime.now()) < 10) // Elapsed Seconds to know if a bread is rotten or not
 					g.drawImage( imagePain, (int)pain.getPosition().dX, (int)pain.getPosition().dY, null);
 				else
+				{
+					listFood.get(i).setMoisi(true);
 					g.drawImage( imagePainMoisi, (int)pain.getPosition().dX, (int)pain.getPosition().dY, null);
+				}
+					
 			}
 		}
-		getFreshest();
+		
 		repaint();
+	}
+
+	public ArrayList<Pigeon> getListPigeon() 
+	{
+		return listPigeon;
 	}
 	
 	
