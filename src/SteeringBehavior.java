@@ -22,8 +22,10 @@ public class SteeringBehavior {
 	public Vector2D seek(Vector2D targetPos)
 	{
 		Vector2D vitesseSouhaite = targetPos.sub(pigeon.getPosition());
-		vitesseSouhaite.normalize();
-		vitesseSouhaite.scale(pigeon.getMaxSpeed());
+		vitesseSouhaite = vitesseSouhaite.normalize();
+		System.out.println("Steering Beha vitesse souhaite = " + vitesseSouhaite);
+		vitesseSouhaite = vitesseSouhaite.scale(pigeon.getMaxSpeed());
+		System.out.println("Steering Beha vitesse souhaite = " + vitesseSouhaite);
 		return vitesseSouhaite;
 		
 	}

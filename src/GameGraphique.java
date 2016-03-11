@@ -79,6 +79,7 @@ public class GameGraphique implements MouseListener {
 		
 		gameWindow.add(menuPanel, BorderLayout.NORTH);
 		gameWindow.add(gamePanel);
+		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameWindow.setResizable(false);
 		gameWindow.setVisible(true);
 		
@@ -95,7 +96,7 @@ public class GameGraphique implements MouseListener {
 		
 		if(e.getSource() == gamePanel)
 		{
-			addFoodOnScreen( e.getX(), e.getY());
+			addFoodOnScreen(e.getX(), e.getY());
 		}
 	}
 
@@ -135,13 +136,14 @@ public class GameGraphique implements MouseListener {
 		System.out.println("test 1" + x  + " "+ y);
 		
 		Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x, y));
-		
+		pigeon.start();
 		gamePanel.addPigeon(pigeon);
 		
 	}
 	
 	public void addFoodOnScreen( int x, int y)
 	{
+		System.out.println(x + " " + y);
 	/*	Vector2D posNew = new Vector2D(x-35,y-35);
 		Vector2D posNeutral = posNew;
 		ArrayList<Food> listF= gamePanel.getList();
@@ -162,6 +164,12 @@ public class GameGraphique implements MouseListener {
 			Food food = new Food( new Vector2D( x-35, y-35), LocalTime.now());
 			gamePanel.addFood( food);
 		//}
+			
+			for(int i = 0; i< gamePanel.getListPigeon().size(); i++)
+			{
+				gamePanel.getListPigeon().get(i).setIsMoving(true);
+				gamePanel.getListPigeon().get(i).setTargetPos(new Vector2D( x-35, y-35));
+			}
 	}
 	
 }

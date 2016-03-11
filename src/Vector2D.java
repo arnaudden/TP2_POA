@@ -70,6 +70,20 @@ public class Vector2D {
    public double dotProduct ( Vector2D v1 ) {
         return this.dX*v1.dX + this.dY*v1.dY;
    }
+   
+   public void truncate(double max)
+   {
+	   if(this.length() > max)
+	   {
+		   this.normalize();
+		   this.scale(max);
+	   }
+   }
+   
+   public void Reinitialize()
+   {
+	   dX = dY = 0.0;
+   }
 
    // Exercise methods in Vector2D class
 
