@@ -73,6 +73,7 @@ public class Vector2D {
    
    public void truncate(double max)
    {
+	   //System.out.println("longueur avant troncature " + this.length());
 	   if(this.length() > max)
 	   {
 		   this.normalize();

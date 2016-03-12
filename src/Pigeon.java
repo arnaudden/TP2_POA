@@ -1,3 +1,7 @@
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+
 import javax.vecmath.Vector2d;
 
 
@@ -31,22 +35,25 @@ public class Pigeon extends Thread{
 	
 	private double distToTarget;
     private Vector2D v_distToTarget;
+    
+    private ArrayList<Food> listFood;
 	
 	public Pigeon()
 	{
 		
 	}
 	
-	public Pigeon(String nm, Vector2D pos)
+	public Pigeon(String nm, Vector2D pos, ArrayList<Food> list)
 	{
 		name = nm;
 		position = pos;
 		velocity = new Vector2D();
 		masse = 10;
-		maxSpeed = 10;
-		isMoving = false;
+		maxSpeed = 5;
 		foodEaten = 0;
 		steering = new SteeringBehavior(this);
+		listFood = list;
+		setIsMoving();
 	}
 	
 	public void run()
@@ -75,16 +82,14 @@ public class Pigeon extends Thread{
         	{
         		unprocessed--;
         		nbTick++;
-        		shouldRender=true;
-        		//System.out.println(nbTick);
         		
         	}
         	
         	double timeFPS =  System.currentTimeMillis() - lastTimeFPS;
-        	if (timeFPS > 1000)
+        	if (timeFPS > 10)
         	{
-        		System.out.println("PigeonGame FPS : " + nbTick);
-        		
+        		shouldRender=true;
+        		//System.out.println("PigeonGame FPS : " + nbTick);
         		lastTimeFPS = System.currentTimeMillis();
         		nbTick = 0;
         	}
@@ -93,11 +98,12 @@ public class Pigeon extends Thread{
         	{
         		if (!isMoving)
     			{
-    				System.out.println("Le pigeon " + name + " est au repos");
+        			setIsMoving();
+    				//System.out.println("Le pigeon " + name + " est au repos");
     			}
     			else if (isMoving)
     			{
-    				double time = timeFPS / 1000;
+    				double time = timeFPS/10;
     				update(time);
     				eatFood();
     				
@@ -121,11 +127,21 @@ public class Pigeon extends Thread{
 	    v_distToTarget = new Vector2D();
 		v_distToTarget = targetPos.sub(position);
 		distToTarget = v_distToTarget.length();
-		System.out.println("Distance to target = " + distToTarget);
+		//System.out.println("Distance to target = " + distToTarget);
 		if(distToTarget < 30)
 		{
 			isMoving = false;
 			velocity.Reinitialize();
+			foodEaten++;
+			System.out.println("Le pigeon " + name + " a mangé " + foodEaten);
+			for(int i = 0; i<listFood.size(); i++)
+			{
+				if(targetPos ==listFood.get(i).getPosition())
+				{
+					listFood.remove(i);
+					//System.out.println("La nourriture a bien été enlevé");
+				}
+			}
 		}
 	}
 	
@@ -134,20 +150,51 @@ public class Pigeon extends Thread{
 		m_TimeElapsed = timeElapsed;
 		
 		Vector2D oldPos = position;
-		System.out.println("timeElaps = " + m_TimeElapsed);
+		//System.out.println("timeElaps = " + m_TimeElapsed);
 		Vector2D steeringForce = steering.seek(targetPos);
-		System.out.println("force = " + steeringForce);
+		//System.out.println("force = " + steeringForce);
 		
 		// Acceleration
 		Vector2D acceleration = steeringForce.scale(1/masse);
-		System.out.println("acc = " + acceleration);
+		//System.out.println("acc = " + acceleration);
 		velocity = velocity.add(acceleration.scale(m_TimeElapsed));
-		System.out.println("vit = " + velocity);
+		//System.out.println("vit = " + velocity);
 		velocity.truncate(maxSpeed);
-		System.out.println("vit = " + velocity);
+		//System.out.println("vit = " + velocity);
 		position = position.add(velocity.scale(m_TimeElapsed));
 		
-		System.out.println(position);
+		//System.out.println(position);
+	}
+	
+	public Food getFreshest()
+	{
+		Food freshBread = null;
+		LocalTime previousTime = null;
+		LocalTime currentTime;
+		for( int i = 0; i <listFood.size(); i++)
+		{	
+			currentTime = listFood.get(i).getFoodAge();
+			if( previousTime == null)
+			{
+				previousTime = currentTime;
+				if (listFood.get(i).isMoisi() ==false)
+					freshBread = listFood.get(i);
+				
+			}
+			else if( ChronoUnit.SECONDS.between( previousTime, currentTime) > 0)
+			{
+				previousTime = currentTime;
+				
+				if (listFood.get(i).isMoisi() ==false)
+					freshBread = listFood.get(i);
+			}
+		}
+		if(freshBread==null)
+		{
+			System.out.println("aucun pain disponible");
+		}
+		
+		return freshBread;
 	}
 	
 	public String getPigeonName ()
@@ -176,9 +223,25 @@ public class Pigeon extends Thread{
 		return maxSpeed;
 	}
 	
-	public void setIsMoving(boolean move)
+	public void setIsMoving()
 	{
-		isMoving = move;
+		if(listFood.isEmpty())
+		{
+			isMoving = false;
+			velocity.Reinitialize();
+		}
+		else
+		{
+			Food bread = getFreshest();
+			if(bread!=null)
+			{
+				targetPos = bread.getPosition();
+				isMoving = true;
+			}
+			else
+				isMoving = false;
+			
+		}
 	}
 
 	public Vector2D getTargetPos() 
@@ -194,6 +257,15 @@ public class Pigeon extends Thread{
 	public double getDistToTarget() 
 	{
 		return distToTarget;
+	}
+
+	public ArrayList<Food> getListFood() {
+		return listFood;
+	}
+
+	public void setListFood(ArrayList<Food> listFood) {
+		this.listFood = listFood;
+		setIsMoving();
 	}
 	
 	

@@ -40,37 +40,24 @@ public class DisplayPigeon extends JPanel {
 	
 	public void addPigeon(Pigeon pig)
 	{
+		
 		listPigeon.add(pig);
 		repaint();
 	}
 	
-	public void addFood(Food pain)
+	public void addFood(Food bread)
 	{
-		listFood.add(pain);
+		listFood.add(bread);
+		for(int i=0; i<listPigeon.size(); i++)
+		{
+			listPigeon.get(i).setListFood(listFood);
+		}
 		repaint();
 	}
 	
-	public Food getFreshest()
-	{
-		Food freshBread = null;
-		LocalTime previousTime = null;
-		LocalTime currentTime;
-		for( int i = 0; i <listFood.size(); i++)
-		{	
-			currentTime = listFood.get(i).getFoodAge();
-			if( previousTime == null)
-				previousTime = currentTime;
-			else if( ChronoUnit.SECONDS.between( previousTime, currentTime) > 0)
-			{
-				previousTime = currentTime;
-				freshBread = listFood.get(i);
-			}
-		}
-		
-		return freshBread;
-	}
 	
-	public ArrayList<Food> getList()
+	
+	public ArrayList<Food> getListFood()
 	{
 		return listFood;
 	}
@@ -91,12 +78,18 @@ public class DisplayPigeon extends JPanel {
 			{
 				Pigeon pig = listPigeon.get(i);
 				g.drawImage(imagePigeonRest, (int)pig.getPosition().dX, (int)pig.getPosition().dY, null);
+				
 			}
 		}
 		
 		
 		if(listFood.isEmpty())
-		{}
+		{
+			for (int i=0; i<listPigeon.size(); i++)
+			{
+				listPigeon.get(i).setIsMoving();
+			}
+		}
 			//System.out.println("Pas de pain");
 		else
 		{
@@ -121,6 +114,5 @@ public class DisplayPigeon extends JPanel {
 	{
 		return listPigeon;
 	}
-	
 	
 }

@@ -135,7 +135,7 @@ public class GameGraphique implements MouseListener {
 		
 		System.out.println("test 1" + x  + " "+ y);
 		
-		Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x, y));
+		Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x, y), gamePanel.getListFood());
 		pigeon.start();
 		gamePanel.addPigeon(pigeon);
 		
@@ -165,11 +165,6 @@ public class GameGraphique implements MouseListener {
 			gamePanel.addFood( food);
 		//}
 			
-			for(int i = 0; i< gamePanel.getListPigeon().size(); i++)
-			{
-				gamePanel.getListPigeon().get(i).setIsMoving(true);
-				gamePanel.getListPigeon().get(i).setTargetPos(new Vector2D( x-35, y-35));
-			}
 	}
 	
 }
