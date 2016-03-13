@@ -1,9 +1,3 @@
-import javax.vecmath.Vector2d;
-
-
-
-
-
 public class SteeringBehavior {
 
 	

@@ -130,8 +130,8 @@ public class GameGraphique implements MouseListener {
 		System.out.println("Clique sur add Pigeon");
 		
 		Random randomGen = new Random();
-		int x = 10 + randomGen.nextInt(800);
-		int y = 10 + randomGen.nextInt(600);
+		int x = 10 + randomGen.nextInt(1000);
+		int y = 10 + randomGen.nextInt(800);
 		
 		System.out.println("test 1" + x  + " "+ y);
 		

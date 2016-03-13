@@ -1,6 +1,7 @@
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.vecmath.Vector2d;
 
@@ -37,6 +38,9 @@ public class Pigeon extends Thread{
     private Vector2D v_distToTarget;
     
     private ArrayList<Food> listFood;
+    
+    private boolean isPanicking;
+    private LocalTime panickCoolDown;
 	
 	public Pigeon()
 	{
@@ -53,6 +57,7 @@ public class Pigeon extends Thread{
 		foodEaten = 0;
 		steering = new SteeringBehavior(this);
 		listFood = list;
+		panickCoolDown = LocalTime.now();
 		setIsMoving();
 	}
 	
@@ -103,10 +108,18 @@ public class Pigeon extends Thread{
     			}
     			else if (isMoving)
     			{
-    				double time = timeFPS/10;
-    				update(time);
-    				eatFood();
-    				
+    				if( !isPanicking)
+    				{
+    					double time = timeFPS/10;
+    					update(time);
+    					eatFood();
+    				}
+    				else if( isPanicking)
+    				{
+    					double time = timeFPS/10;
+    					update(time);
+    					goPanicking();
+    				}
     			}
         	}
 			
@@ -142,8 +155,26 @@ public class Pigeon extends Thread{
 					//System.out.println("La nourriture a bien été enlevé");
 				}
 			}
+			panickCoolDown = LocalTime.now();
 		}
 	}
+	
+	public void goPanicking()
+	{
+		distToTarget = 0;
+	    v_distToTarget = new Vector2D();
+		v_distToTarget = targetPos.sub(position);
+		distToTarget = v_distToTarget.length();
+		if( distToTarget < 30)
+		{
+			isMoving = false;
+			velocity.Reinitialize();
+			isPanicking = false;
+			panickCoolDown = LocalTime.now();
+		}
+	}
+	
+	
 	
 	public void update(double timeElapsed)
 	{
@@ -197,12 +228,42 @@ public class Pigeon extends Thread{
 		return freshBread;
 	}
 	
+	public void setIsMoving()
+	{
+		if(listFood.isEmpty())
+		{
+			if( Math.random() > 0.70 && ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) > 6 && !isPanicking)
+			{
+				targetPos = new Vector2D( 1000 - position.dX, 800 - position.dY);
+				isMoving = true;
+				isPanicking = true;
+			}
+			else if( ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) < 6)
+			{
+				isMoving = false;
+				velocity.Reinitialize();
+			}
+		}
+		else
+		{
+			Food bread = getFreshest();
+			if(bread!=null)
+			{
+				System.out.println( "true");
+				targetPos = bread.getPosition();
+				isMoving = true;
+			}
+			else
+				isMoving = false;	
+		}
+	}
+	
+	//Accesseurs
 	public String getPigeonName ()
 	{
 		return name;
 	}
 	
-
 	public Vector2D getPosition() 
 	{
 		return position;
@@ -223,27 +284,6 @@ public class Pigeon extends Thread{
 		return maxSpeed;
 	}
 	
-	public void setIsMoving()
-	{
-		if(listFood.isEmpty())
-		{
-			isMoving = false;
-			velocity.Reinitialize();
-		}
-		else
-		{
-			Food bread = getFreshest();
-			if(bread!=null)
-			{
-				targetPos = bread.getPosition();
-				isMoving = true;
-			}
-			else
-				isMoving = false;
-			
-		}
-	}
-
 	public Vector2D getTargetPos() 
 	{
 		return targetPos;
