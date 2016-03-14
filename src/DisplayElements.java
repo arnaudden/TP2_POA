@@ -14,7 +14,7 @@ import javax.swing.JPanel;
  * @author Arnaud
  *
  */
-public class DisplayPigeon extends JPanel {
+public class DisplayElements extends JPanel {
 
 	/**
 	 * Image correspondant au pigeon 
@@ -44,7 +44,7 @@ public class DisplayPigeon extends JPanel {
 	/**
 	 * Constructeur du GamePanel
 	 */
-	public DisplayPigeon()
+	public DisplayElements()
 	{
 		listPigeon = new ArrayList<Pigeon>();
 		listFood = new ArrayList<Food>();

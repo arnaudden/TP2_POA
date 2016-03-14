@@ -39,7 +39,7 @@ public class GameGraphique implements MouseListener {
 	/**
 	 * Panel contenant la zone public avec les pigeons et la nourriture
 	 */
-	private DisplayPigeon gamePanel;
+	private DisplayElements gamePanel;
 	
 	/**
 	 * JPanel contenant le menu pour ajouter un pigeon
@@ -80,7 +80,7 @@ public class GameGraphique implements MouseListener {
 		gameWindow.setSize(1000,1000);
 		
 		// Gestion du GamePanel et GameCanvas
-		gamePanel = new DisplayPigeon();
+		gamePanel = new DisplayElements();
 		gamePanel.setSize(1000,800);
 		gamePanel.addMouseListener(this);
 		
@@ -158,47 +158,69 @@ public class GameGraphique implements MouseListener {
 	 * Méthode permettant d'ajouter un pigeon à l'écran
 	 */
 	public void addPigeonOnScreen()
-	{
-		System.out.println("Clique sur add Pigeon");
-		
+	{		
 		Random randomGen = new Random();
 		int x = 10 + randomGen.nextInt(1000);
 		int y = 10 + randomGen.nextInt(800);
-		
-		System.out.println("test 1" + x  + " "+ y);
-		
-		Vector2D posNew = new Vector2D(x-37,y-30);
+
+		Vector2D posNew = new Vector2D( x - 37, y - 30);
 		Vector2D posNeutral = posNew;
 		ArrayList<Food> listPigeon = gamePanel.getListFood();
 		boolean spawnPossible = false;
-		if( listPigeon.size() != 0)
+		try
 		{
-			for( int i = 0; i < listPigeon.size(); i++)
+			if( namePigeonTF.getText().isEmpty() || namePigeonTF.getText().contains(" "))
+				throw new InputPigeonException();
+			
+			if( listPigeon.size() != 0)
 			{
-				if(  posNew.sub(listPigeon.get(i).getPosition()).length() < 50)
+				for( int i = 0; i < listPigeon.size(); i++)
 				{
-					spawnPossible = false;
-					break;
+					try
+					{
+						if( namePigeonTF.getText().equals(listPigeon.get((i))))
+								throw new InputPigeonException( namePigeonTF.getText());
+						
+						if(  posNew.sub(listPigeon.get(i).getPosition()).length() < 50)
+						{
+							addPigeonOnScreen();
+							break;
+						}
+						else
+						{
+							spawnPossible = true;
+						}
+						posNew = posNeutral;
+						}
+					catch( InputPigeonException e)
+					{
+						e.printStackTrace();
+					}
 				}
-				else
+				
+				
+				if( spawnPossible)
 				{
-					spawnPossible = true;
-				}
-				posNew = posNeutral;
+					Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 37, y-30), gamePanel.getListFood());
+					pigeon.start();
+					gamePanel.addPigeon(pigeon);
+				}	
 			}
-			if( spawnPossible)
+			else // Si liste pigeons vide
 			{
-				Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 36, y-30), gamePanel.getListFood());
-				pigeon.start();
-				gamePanel.addPigeon(pigeon);
-			}	
+
+
+						Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 37, y-30), gamePanel.getListFood());
+						pigeon.start();
+						gamePanel.addPigeon(pigeon);
+
+			}
+	
 		}
-		else
+		catch( InputPigeonException e)
 		{
-			Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 36, y-30), gamePanel.getListFood());
-			pigeon.start();
-			gamePanel.addPigeon(pigeon);
-		}			
+			e.printStackTrace();
+		}
 	}
 	
 	/**
