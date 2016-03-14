@@ -12,6 +12,6 @@ public class InputPigeonException extends Exception
 	
 	public InputPigeonException( String str)
 	{
-		super( "ERROR - Un pigeon possédant ce nom existe déjà");
+		super( "ERROR - Un pigeon possédant le nom " + str + " existe déjà");
 	}
 }

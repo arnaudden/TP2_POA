@@ -165,23 +165,22 @@ public class GameGraphique implements MouseListener {
 
 		Vector2D posNew = new Vector2D( x - 37, y - 30);
 		Vector2D posNeutral = posNew;
-		ArrayList<Food> listPigeon = gamePanel.getListFood();
 		boolean spawnPossible = false;
 		try
 		{
 			if( namePigeonTF.getText().isEmpty() || namePigeonTF.getText().contains(" "))
 				throw new InputPigeonException();
 			
-			if( listPigeon.size() != 0)
+			if( gamePanel.getListPigeon().size() != 0)
 			{
-				for( int i = 0; i < listPigeon.size(); i++)
+				for( int i = 0; i < gamePanel.getListPigeon().size(); i++)
 				{
 					try
 					{
-						if( namePigeonTF.getText().equals(listPigeon.get((i))))
+						if( namePigeonTF.getText().equals(gamePanel.getListPigeon().get(i).getPigeonName()))
 								throw new InputPigeonException( namePigeonTF.getText());
 						
-						if(  posNew.sub(listPigeon.get(i).getPosition()).length() < 50)
+						if(  posNew.sub(gamePanel.getListPigeon().get(i).getPosition()).length() < 50)
 						{
 							addPigeonOnScreen();
 							break;
@@ -202,17 +201,19 @@ public class GameGraphique implements MouseListener {
 				if( spawnPossible)
 				{
 					Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 37, y-30), gamePanel.getListFood());
-					pigeon.start();
+					PigeonState pigState = new PigeonState(pigeon);
+					(new Thread(pigState)).start();
 					gamePanel.addPigeon(pigeon);
+					
 				}	
 			}
 			else // Si liste pigeons vide
 			{
 
-
-						Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 37, y-30), gamePanel.getListFood());
-						pigeon.start();
-						gamePanel.addPigeon(pigeon);
+				Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 37, y-30), gamePanel.getListFood());
+				PigeonState pigState = new PigeonState(pigeon);
+				(new Thread(pigState)).start();
+				gamePanel.addPigeon(pigeon);
 
 			}
 	

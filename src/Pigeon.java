@@ -1,21 +1,12 @@
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.io.File;
-import java.io.IOException;
+
 import java.net.MalformedURLException;
-import java.net.URLEncoder;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
-import javax.vecmath.Vector2d;
-
-
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 
 
@@ -24,7 +15,7 @@ import javafx.scene.media.MediaPlayer;
  * @author Arnaud
  *
  */
-public class Pigeon extends Thread{
+public class Pigeon {
 
 	/**
 	 * String représentant le nom du pigeon
@@ -143,81 +134,7 @@ public class Pigeon extends Thread{
 		
 	}
 	
-	/**
-	 * Méthode appelé automatiquement car la Classe Pigeon est un Thread. Cette méthode met à jour l'état
-	 * du pigeon pour savoir s'il doit aller manger une nourriture ou rester au repos
-	 */
-	public void run()
-	{
 	
-		 long lastTimeFPS = System.currentTimeMillis();
-	     long lastTime = System.nanoTime();
-	     double unprocessed = 0;
-	        
-	     double framerate = 60;
-	     double nsPerTick = 1000000000.0 / framerate;
-	     boolean shouldRender = false;
-	     double nbTick=0;
-	     
-	     
-		
-		while(true)
-		{
-			shouldRender = false;
-        	unprocessed+=(System.nanoTime() - lastTime) / nsPerTick;
-        	lastTime = System.nanoTime();
-        	
-        	for(double i=1; i<unprocessed;i++ )
-        	{
-        		unprocessed--;
-        		nbTick++;
-        		
-        	}
-        	
-        	double timeFPS =  System.currentTimeMillis() - lastTimeFPS;
-        	if (timeFPS > 10)
-        	{
-        		shouldRender=true;
-        		//System.out.println("PigeonGame FPS : " + nbTick);
-        		lastTimeFPS = System.currentTimeMillis();
-        		nbTick = 0;
-        	}
-        	
-        	if (shouldRender)
-        	{
-        		if (!isMoving)
-    			{
-        			setIsMoving();
-    				//System.out.println("Le pigeon " + name + " est au repos");
-    			}
-    			else if (isMoving)
-    			{
-    				setIsMoving();
-    				if( !isPanicking)
-    				{
-    					double time = timeFPS/10;
-    					update(time);
-    					eatFood();
-    				}
-    				else if( isPanicking)
-    				{
-    					double time = timeFPS/10;
-    					update(time);
-    					goPanicking();
-    				}
-    			}
-        	}
-			
-			
-			// Delay processing
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-		}
-		
-	}
 	
 	/**
 	 * Méthode permettant de savoir si le pigeon est proche de la nourriture ou pas pour la manger.
@@ -353,8 +270,8 @@ public class Pigeon extends Thread{
 			if( Math.random() > 0.70 && ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) > 2 && !isPanicking)
 			{
 				Random randomGen = new Random();
-				int x = 10 + randomGen.nextInt(1000);
-				int y = 10 + randomGen.nextInt(800);
+				int x = 10 + randomGen.nextInt(800);
+				int y = 10 + randomGen.nextInt(600);
 				targetPos = new Vector2D( x,y);
 				isMoving = true;
 				isPanicking = true;
@@ -374,8 +291,8 @@ public class Pigeon extends Thread{
 				if( Math.random() > 0.70 && ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) > 2 && !isPanicking)
 				{
 					Random randomGen = new Random();
-					int x = 10 + randomGen.nextInt(1000);
-					int y = 10 + randomGen.nextInt(800);
+					int x = 10 + randomGen.nextInt(800);
+					int y = 10 + randomGen.nextInt(600);
 					targetPos = new Vector2D( x,y);
 					isMoving = true;
 					isPanicking = true;
@@ -441,5 +358,14 @@ public class Pigeon extends Thread{
 		this.listFood = listFood;
 		setIsMoving();
 	}
+
+	public boolean isMoving() {
+		return isMoving;
+	}
+
+	public boolean isPanicking() {
+		return isPanicking;
+	}
 		
+	
 }
