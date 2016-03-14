@@ -167,10 +167,38 @@ public class GameGraphique implements MouseListener {
 		
 		System.out.println("test 1" + x  + " "+ y);
 		
-		Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 36, y-30), gamePanel.getListFood());
-		pigeon.start();
-		gamePanel.addPigeon(pigeon);
-		
+		Vector2D posNew = new Vector2D(x-37,y-30);
+		Vector2D posNeutral = posNew;
+		ArrayList<Food> listPigeon = gamePanel.getListFood();
+		boolean spawnPossible = false;
+		if( listPigeon.size() != 0)
+		{
+			for( int i = 0; i < listPigeon.size(); i++)
+			{
+				if(  posNew.sub(listPigeon.get(i).getPosition()).length() < 50)
+				{
+					spawnPossible = false;
+					break;
+				}
+				else
+				{
+					spawnPossible = true;
+				}
+				posNew = posNeutral;
+			}
+			if( spawnPossible)
+			{
+				Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 36, y-30), gamePanel.getListFood());
+				pigeon.start();
+				gamePanel.addPigeon(pigeon);
+			}	
+		}
+		else
+		{
+			Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 36, y-30), gamePanel.getListFood());
+			pigeon.start();
+			gamePanel.addPigeon(pigeon);
+		}			
 	}
 	
 	/**
@@ -180,28 +208,36 @@ public class GameGraphique implements MouseListener {
 	 */
 	public void addFoodOnScreen( int x, int y)
 	{
-		System.out.println(x + " " + y);
-	/*	Vector2D posNew = new Vector2D(x-35,y-35);
+		Vector2D posNew = new Vector2D(x-35,y-35);
 		Vector2D posNeutral = posNew;
-		ArrayList<Food> listF= gamePanel.getList();
+		ArrayList<Food> listF= gamePanel.getListFood();
+		boolean okToDraw = false;
 		if( listF.size() != 0)
 		{
 			for( int i = 0; i < listF.size(); i++)
 			{
-				if(  posNew.sub(listF.get(i).getPosition()).length() > 50)
+				if(  posNew.sub(listF.get(i).getPosition()).length() < 50)
 				{
-					Food food = new Food( posNeutral, LocalTime.now());
-					gamePanel.addFood( food);
+					okToDraw = false;
+					break;
+				}
+				else
+				{
+					okToDraw = true;
 				}
 				posNew = posNeutral;
 			}
+			if( okToDraw)
+			{
+				Food food = new Food( posNeutral, LocalTime.now());
+				gamePanel.addFood( food);
+			}	
 		}
 		else
-		{*/
+		{
 			Food food = new Food( new Vector2D( x-35, y-35), LocalTime.now());
 			gamePanel.addFood( food);
-		//}
-			
+		}	
 	}
 	
 }

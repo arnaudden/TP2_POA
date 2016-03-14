@@ -222,7 +222,7 @@ public class Pigeon extends Thread{
 	/**
 	 * Méthode permettant de savoir si le pigeon est proche de la nourriture ou pas pour la manger.
 	 */
-	synchronized public void eatFood()
+	public void eatFood()
 	{
 		distToTarget = 0;
 	    v_distToTarget = new Vector2D();
@@ -231,7 +231,7 @@ public class Pigeon extends Thread{
 		//System.out.println("Distance to target = " + distToTarget);
 		try
 		{
-			if(distToTarget < 30 && listFood.get(indexFood) != null)
+			if( indexFood != -1 &&( distToTarget < 30 && listFood.get(indexFood) != null))
 			{
 				isMoving = false;
 				velocity.Reinitialize();
@@ -245,14 +245,16 @@ public class Pigeon extends Thread{
 						listFood.remove(i);
 					}
 				}
+				indexFood = -1;
 			}
 			panickCoolDown = LocalTime.now();
 		}
 		catch( Exception e)
 		{
-			e.printStackTrace();
 			isMoving = false;
 			velocity.Reinitialize();
+			indexFood = -1;
+			e.printStackTrace();
 		}
 	}
 	
@@ -316,8 +318,10 @@ public class Pigeon extends Thread{
 			{
 				previousTime = currentTime;
 				if (listFood.get(i).isMoisi() ==false)
+				{
 					freshBread = listFood.get(i);
-				
+					indexFood = i;
+				}
 			}
 			else if( ChronoUnit.SECONDS.between( previousTime, currentTime) > 0)
 			{
@@ -333,6 +337,7 @@ public class Pigeon extends Thread{
 		if(freshBread==null)
 		{
 			System.out.println("aucun pain disponible");
+			indexFood = -1;
 		}
 		
 		return freshBread;

@@ -41,7 +41,6 @@ public class DisplayPigeon extends JPanel {
 	 */
 	private ArrayList<Food> listFood;
 	
-	
 	/**
 	 * Constructeur du GamePanel
 	 */
@@ -87,8 +86,6 @@ public class DisplayPigeon extends JPanel {
 		}
 		repaint();
 	}
-	
-	
 	
 	public ArrayList<Food> getListFood()
 	{
