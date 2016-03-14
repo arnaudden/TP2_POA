@@ -1,3 +1,4 @@
+package Graphic;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -20,6 +21,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import Graphic.DisplayElements;
+import Math.Vector2D;
+import Entity.Food;
+import Entity.Pigeon;
+import Exception.InputPigeonException;
+import PigeonState.PigeonState;
 
 
 /**

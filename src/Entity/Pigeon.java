@@ -1,3 +1,4 @@
+package Entity;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.io.File;
@@ -7,6 +8,9 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Random;
+
+import Math.Vector2D;
+import PigeonState.SteeringBehavior;
 
 
 

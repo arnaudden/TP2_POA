@@ -1,5 +1,8 @@
+package Entity;
 
 import java.time.LocalTime;
+
+import Math.Vector2D;
 
 
 /**

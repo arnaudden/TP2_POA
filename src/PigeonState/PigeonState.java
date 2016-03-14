@@ -1,3 +1,5 @@
+package PigeonState;
+import Entity.Pigeon;
 
 public class PigeonState implements Runnable{
 

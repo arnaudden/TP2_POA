@@ -1,3 +1,4 @@
+package Graphic;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,6 +9,9 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import Entity.Food;
+import Entity.Pigeon;
 
 /**
  * Classe qui gère le gamePanel
@@ -111,7 +115,7 @@ public class DisplayElements extends JPanel {
 			for(int i=0; i<listPigeon.size(); i++)
 			{
 				Pigeon pig = listPigeon.get(i);
-				g.drawImage(imagePigeonRest, (int)pig.getPosition().dX, (int)pig.getPosition().dY, null);
+				g.drawImage(imagePigeonRest, (int)pig.getPosition().getX(), (int)pig.getPosition().getY(), null);
 				
 			}
 		}
@@ -131,11 +135,11 @@ public class DisplayElements extends JPanel {
 			{	
 				Food pain = listFood.get(i);	
 				if( ChronoUnit.SECONDS.between(pain.getFoodAge(), LocalTime.now()) < 10) // Elapsed Seconds to know if a bread is rotten or not
-					g.drawImage( imagePain, (int)pain.getPosition().dX, (int)pain.getPosition().dY, null);
+					g.drawImage( imagePain, (int)pain.getPosition().getX(), (int)pain.getPosition().getY(), null);
 				else
 				{
 					listFood.get(i).setMoisi(true);
-					g.drawImage( imagePainMoisi, (int)pain.getPosition().dX, (int)pain.getPosition().dY, null);
+					g.drawImage( imagePainMoisi, (int)pain.getPosition().getX(), (int)pain.getPosition().getY(), null);
 				}
 					
 			}
