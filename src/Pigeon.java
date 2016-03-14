@@ -1,9 +1,21 @@
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.vecmath.Vector2d;
+
+
+
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 
@@ -14,39 +26,94 @@ import javax.vecmath.Vector2d;
  */
 public class Pigeon extends Thread{
 
+	/**
+	 * String représentant le nom du pigeon
+	 */
 	private String name;
 	
+	/**
+	 * Vecteur représentant la position du pigeon
+	 */
 	private Vector2D position;
 	
+	/**
+	 * Vecteur représentant la vitesse du pigeon
+	 */
 	private Vector2D velocity;
 	
+	/**
+	 * Double représentant la masse du pigeon
+	 */
 	private double masse;
 	
+	/**
+	 * Double représentant la vitesse maximale du pigeon
+	 */
 	private double maxSpeed;
 	
+	/**
+	 * Boolean permettant de déterminer si le pigeon bouge ou s'il est au repos
+	 */
 	private boolean isMoving;
 	
+	/**
+	 * Int correspondant au nombre de nourriture qu'un pigeon a mangé
+	 */
 	private int foodEaten;
 	
+	/**
+	 * Instance de la classe Steering behavior contenant les méthodes de déplacement
+	 */
 	private SteeringBehavior steering;
 	
+	/**
+	 * Vecteur correspondant à la position de la cible du pigeon
+	 */
 	private Vector2D targetPos;
 	
+	/**
+	 * double correspondant au temps écoulé entre deux MAJ du jeux
+	 */
 	private double m_TimeElapsed;
 	
+	/**
+	 * Double correspondant à la distance entre la cible et le pigeon
+	 */
 	private double distToTarget;
+	
+	/**
+	 * Vecteur correspondant à la distance entre le pigeon et la cible
+	 */
     private Vector2D v_distToTarget;
     
+    /**
+     * Liste de nourriture que le pigeon peut manger
+     */
     private ArrayList<Food> listFood;
     
+    /**
+     * Boolean indiquant si le pigeon a peur ou s'il se déplace normalement
+     */
     private boolean isPanicking;
+    
+    /**
+     * LocalTime correspondant a une pause de temps entre deux actions de peur
+     */
     private LocalTime panickCoolDown;
+    
+    private AudioClip noiseSong;
 	
 	public Pigeon()
 	{
 		
 	}
 	
+	/**
+	 * Constructeur de la classe Pigeon
+	 * @param nm : nom du pigeon
+	 * @param pos : position d'origine du pigeon
+	 * @param list : liste initiale de nourriture
+	 */
 	public Pigeon(String nm, Vector2D pos, ArrayList<Food> list)
 	{
 		name = nm;
@@ -59,8 +126,24 @@ public class Pigeon extends Thread{
 		listFood = list;
 		panickCoolDown = LocalTime.now();
 		setIsMoving();
+		
+		File son = new File("music/gunfire.wav");
+		noiseSong = null;
+		try
+		{
+		noiseSong = Applet.newAudioClip(son.toURL());
+		}
+		catch (MalformedURLException e)
+		{
+		System.out.println(e.getMessage());
+		}
+		
 	}
 	
+	/**
+	 * Méthode appelé automatiquement car la Classe Pigeon est un Thread. Cette méthode met à jour l'état
+	 * du pigeon pour savoir s'il doit aller manger une nourriture ou rester au repos
+	 */
 	public void run()
 	{
 	
@@ -78,10 +161,8 @@ public class Pigeon extends Thread{
 		while(true)
 		{
 			shouldRender = false;
-			 // TP1 : Gestion des ticks
         	unprocessed+=(System.nanoTime() - lastTime) / nsPerTick;
         	lastTime = System.nanoTime();
-        	
         	
         	for(double i=1; i<unprocessed;i++ )
         	{
@@ -108,6 +189,7 @@ public class Pigeon extends Thread{
     			}
     			else if (isMoving)
     			{
+    				setIsMoving();
     				if( !isPanicking)
     				{
     					double time = timeFPS/10;
@@ -134,6 +216,9 @@ public class Pigeon extends Thread{
 		
 	}
 	
+	/**
+	 * Méthode permettant de savoir si le pigeon est proche de la nourriture ou pas pour la manger.
+	 */
 	public void eatFood()
 	{
 		distToTarget = 0;
@@ -159,6 +244,9 @@ public class Pigeon extends Thread{
 		}
 	}
 	
+	/**
+	 * Méthode appelé lorsque le pigeon est paniqué et pour qu'il aille assez loin de la zone de peur
+	 */
 	public void goPanicking()
 	{
 		distToTarget = 0;
@@ -175,7 +263,10 @@ public class Pigeon extends Thread{
 	}
 	
 	
-	
+	/**
+	 * Méthode appelé pour mettre à jour les champs du pigeon (vitesse, position) lorsque le pigeon est isMoving
+	 * @param timeElapsed : temps entre chaque appel
+	 */
 	public void update(double timeElapsed)
 	{
 		m_TimeElapsed = timeElapsed;
@@ -197,6 +288,10 @@ public class Pigeon extends Thread{
 		//System.out.println(position);
 	}
 	
+	/**
+	 * Méthode permettant d'avoir une nourriture fraiche pour le pigeon
+	 * @return Food : une nourriture fraiche
+	 */
 	public Food getFreshest()
 	{
 		Food freshBread = null;
@@ -228,17 +323,24 @@ public class Pigeon extends Thread{
 		return freshBread;
 	}
 	
+	/**
+	 * Permet de mettre à jour l'état du boolean isMoving et isPanicking
+	 */
 	public void setIsMoving()
 	{
 		if(listFood.isEmpty())
 		{
-			if( Math.random() > 0.70 && ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) > 6 && !isPanicking)
+			if( Math.random() > 0.70 && ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) > 2 && !isPanicking)
 			{
-				targetPos = new Vector2D( 1000 - position.dX, 800 - position.dY);
+				Random randomGen = new Random();
+				int x = 10 + randomGen.nextInt(1000);
+				int y = 10 + randomGen.nextInt(800);
+				targetPos = new Vector2D( x,y);
 				isMoving = true;
 				isPanicking = true;
+				noiseSong.play();
 			}
-			else if( ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) < 6)
+			else if( ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) < 2)
 			{
 				isMoving = false;
 				velocity.Reinitialize();
@@ -249,9 +351,21 @@ public class Pigeon extends Thread{
 			Food bread = getFreshest();
 			if(bread!=null)
 			{
-				System.out.println( "true");
-				targetPos = bread.getPosition();
-				isMoving = true;
+				if( Math.random() > 0.70 && ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) > 2 && !isPanicking)
+				{
+					Random randomGen = new Random();
+					int x = 10 + randomGen.nextInt(1000);
+					int y = 10 + randomGen.nextInt(800);
+					targetPos = new Vector2D( x,y);
+					isMoving = true;
+					isPanicking = true;
+					noiseSong.play();
+				}
+				else if( ChronoUnit.SECONDS.between( panickCoolDown, LocalTime.now()) < 2)
+				{
+					targetPos = bread.getPosition();
+					isMoving = true;
+				}
 			}
 			else
 				isMoving = false;	

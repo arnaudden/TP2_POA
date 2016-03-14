@@ -9,17 +9,42 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * Classe qui gère le gamePanel
+ * @author Arnaud
+ *
+ */
 public class DisplayPigeon extends JPanel {
 
-	
+	/**
+	 * Image correspondant au pigeon 
+	 */
 	private BufferedImage imagePigeonRest;
+	
+	/**
+	 * Image correspondant au pain normal
+	 */
 	private BufferedImage imagePain;
+	
+	/**
+	 * Image correspondant au pain moisi
+	 */
 	private BufferedImage imagePainMoisi;
 	
+	/**
+	 * Liste de pigeon présent dans la scène
+	 */
 	private ArrayList<Pigeon> listPigeon;
+	
+	/**
+	 * Liste de nourriture présent dans la scène
+	 */
 	private ArrayList<Food> listFood;
 	
 	
+	/**
+	 * Constructeur du GamePanel
+	 */
 	public DisplayPigeon()
 	{
 		listPigeon = new ArrayList<Pigeon>();
@@ -38,6 +63,10 @@ public class DisplayPigeon extends JPanel {
 	    
 	}
 	
+	/**
+	 * Méthode appelé lors de l'ajout d'un pigeon dans la scène
+	 * @param pig : Pigeon à ajouter
+	 */
 	public void addPigeon(Pigeon pig)
 	{
 		
@@ -45,6 +74,10 @@ public class DisplayPigeon extends JPanel {
 		repaint();
 	}
 	
+	/**
+	 * méthode appelé lors de l'ajout d'une nourriture
+	 * @param bread : nourriture à ajouter
+	 */
 	public void addFood(Food bread)
 	{
 		listFood.add(bread);
@@ -62,6 +95,10 @@ public class DisplayPigeon extends JPanel {
 		return listFood;
 	}
 	
+	/**
+	 * Appelé pour mettre à jour le GamePanel (déplacement des pigeons
+	 * et apparition/disparition de la nourriture
+	 */
 	@Override
 	public void paintComponent(Graphics g)
 	{

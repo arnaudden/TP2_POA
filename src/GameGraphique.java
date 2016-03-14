@@ -22,27 +22,54 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
-
+/**
+ * Classe qui gère la fenetre principale du jeu
+ * @author Arnaud
+ *
+ */
 public class GameGraphique implements MouseListener {
 
 
 
+	/**
+	 * JFrame correspondant à la fenêtre principal
+	 */
 	private JFrame gameWindow;
 	
+	/**
+	 * Panel contenant la zone public avec les pigeons et la nourriture
+	 */
 	private DisplayPigeon gamePanel;
 	
+	/**
+	 * JPanel contenant le menu pour ajouter un pigeon
+	 */
 	private JPanel menuPanel;
 	
+	/**
+	 * Label contenant une phrase "Nom du pigeon : "
+	 */
 	private JLabel namePigeonLabel;
-	
+	/**
+	 * TextField permettant de récupérer le nom du pigeon
+	 */
 	private JTextField namePigeonTF;
 	
+	/**
+	 * Bouton pour ajouter un pigeon
+	 */
 	private JButton addPigeonButton;
-	
+
+	/**
+	 * Font pour avoir les textes en gros caractère
+	 */
 	private Font fontPrincipal;
 	
 	
-	
+	/**
+	 * Constructeur de la classe GameGraphique : permet de placer chaque panel 
+	 * au lancement de l'application
+	 */
 	public GameGraphique()
 	{
 		
@@ -86,6 +113,9 @@ public class GameGraphique implements MouseListener {
 	}
 	
 
+	/**
+	 * Méthode qui permet de détecter le clique de la sourie
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -124,7 +154,9 @@ public class GameGraphique implements MouseListener {
 		
 	}
 	
-	
+	/**
+	 * Méthode permettant d'ajouter un pigeon à l'écran
+	 */
 	public void addPigeonOnScreen()
 	{
 		System.out.println("Clique sur add Pigeon");
@@ -135,12 +167,17 @@ public class GameGraphique implements MouseListener {
 		
 		System.out.println("test 1" + x  + " "+ y);
 		
-		Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x, y), gamePanel.getListFood());
+		Pigeon pigeon = new Pigeon(namePigeonTF.getText(), new Vector2D(x - 36, y-30), gamePanel.getListFood());
 		pigeon.start();
 		gamePanel.addPigeon(pigeon);
 		
 	}
 	
+	/**
+	 * Méthode permettant d'ajouter une nourriture
+	 * @param x : position x de la nourriture
+	 * @param y : position y de la nourriture
+	 */
 	public void addFoodOnScreen( int x, int y)
 	{
 		System.out.println(x + " " + y);
