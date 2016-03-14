@@ -91,6 +91,8 @@ public class Pigeon extends Thread{
      */
     private ArrayList<Food> listFood;
     
+    private int indexFood;
+    
     /**
      * Boolean indiquant si le pigeon a peur ou s'il se déplace normalement
      */
@@ -100,6 +102,7 @@ public class Pigeon extends Thread{
      * LocalTime correspondant a une pause de temps entre deux actions de peur
      */
     private LocalTime panickCoolDown;
+    
     
     private AudioClip noiseSong;
 	
@@ -219,28 +222,37 @@ public class Pigeon extends Thread{
 	/**
 	 * Méthode permettant de savoir si le pigeon est proche de la nourriture ou pas pour la manger.
 	 */
-	public void eatFood()
+	synchronized public void eatFood()
 	{
 		distToTarget = 0;
 	    v_distToTarget = new Vector2D();
 		v_distToTarget = targetPos.sub(position);
 		distToTarget = v_distToTarget.length();
 		//System.out.println("Distance to target = " + distToTarget);
-		if(distToTarget < 30)
+		try
 		{
-			isMoving = false;
-			velocity.Reinitialize();
-			foodEaten++;
-			System.out.println("Le pigeon " + name + " a mangé " + foodEaten);
-			for(int i = 0; i<listFood.size(); i++)
+			if(distToTarget < 30 && listFood.get(indexFood) != null)
 			{
-				if(targetPos ==listFood.get(i).getPosition())
+				isMoving = false;
+				velocity.Reinitialize();
+				foodEaten++;
+				System.out.println("Le pigeon " + name + " a mangé " + foodEaten);
+				for(int i = 0; i<listFood.size(); i++)
 				{
-					listFood.remove(i);
-					//System.out.println("La nourriture a bien été enlevé");
+					if(targetPos == listFood.get(i).getPosition())
+					{
+						//System.out.println("La nourriture a bien été enlevé");
+						listFood.remove(i);
+					}
 				}
 			}
 			panickCoolDown = LocalTime.now();
+		}
+		catch( Exception e)
+		{
+			e.printStackTrace();
+			isMoving = false;
+			velocity.Reinitialize();
 		}
 	}
 	
@@ -312,7 +324,10 @@ public class Pigeon extends Thread{
 				previousTime = currentTime;
 				
 				if (listFood.get(i).isMoisi() ==false)
+				{
 					freshBread = listFood.get(i);
+					indexFood = i;
+				}
 			}
 		}
 		if(freshBread==null)
@@ -421,6 +436,5 @@ public class Pigeon extends Thread{
 		this.listFood = listFood;
 		setIsMoving();
 	}
-	
-	
+		
 }
