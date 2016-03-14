@@ -1,10 +1,24 @@
 package PigeonState;
 import Entity.Pigeon;
 
+
+/**
+ * Cette classe permet de gérer l'état des pigeons. 
+ * Elle implémente Runnable pour exécuter un thread par pigeon
+ * @author Arnaud
+ *
+ */
 public class PigeonState implements Runnable{
 
+	/**
+	 * pigeon associé à l'état
+	 */
 	private Pigeon pigeon;
 	
+	/**
+	 * Constructeur de la classe 
+	 * @param pig : un Pigeon
+	 */
 	public PigeonState(Pigeon pig)
 	{
 		pigeon = pig;
