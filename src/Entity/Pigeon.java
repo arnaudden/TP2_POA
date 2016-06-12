@@ -15,69 +15,69 @@ import PigeonState.SteeringBehavior;
 
 
 /**
- * Classe créer pour la gestion des pigeons
+ * Classe crï¿½er pour la gestion des pigeons
  * @author Arnaud
  *
  */
 public class Pigeon {
 
 	/**
-	 * String représentant le nom du pigeon
+	 * String reprï¿½sentant le nom du pigeon
 	 */
 	private String name;
 	
 	/**
-	 * Vecteur représentant la position du pigeon
+	 * Vecteur reprï¿½sentant la position du pigeon
 	 */
 	private Vector2D position;
 	
 	/**
-	 * Vecteur représentant la vitesse du pigeon
+	 * Vecteur reprï¿½sentant la vitesse du pigeon
 	 */
 	private Vector2D velocity;
 	
 	/**
-	 * Double représentant la masse du pigeon
+	 * Double reprï¿½sentant la masse du pigeon
 	 */
 	private double masse;
 	
 	/**
-	 * Double représentant la vitesse maximale du pigeon
+	 * Double reprï¿½sentant la vitesse maximale du pigeon
 	 */
 	private double maxSpeed;
 	
 	/**
-	 * Boolean permettant de déterminer si le pigeon bouge ou s'il est au repos
+	 * Boolean permettant de dï¿½terminer si le pigeon bouge ou s'il est au repos
 	 */
 	private boolean isMoving;
 	
 	/**
-	 * Int correspondant au nombre de nourriture qu'un pigeon a mangé
+	 * Int correspondent au nombre de nourriture qu'un pigeon a mangï¿½
 	 */
 	private int foodEaten;
 	
 	/**
-	 * Instance de la classe Steering behavior contenant les méthodes de déplacement
+	 * Instance de la classe Steering behavior contenant les mï¿½thodes de dï¿½placement
 	 */
 	private SteeringBehavior steering;
 	
 	/**
-	 * Vecteur correspondant à la position de la cible du pigeon
+	 * Vecteur correspondent ï¿½ la position de la cible du pigeon
 	 */
 	private Vector2D targetPos;
 	
 	/**
-	 * double correspondant au temps écoulé entre deux MAJ du jeux
+	 * double correspondent au temps ï¿½coulï¿½ entre deux MAJ du jeux
 	 */
 	private double m_TimeElapsed;
 	
 	/**
-	 * Double correspondant à la distance entre la cible et le pigeon
+	 * Double correspondent ï¿½ la distance entre la cible et le pigeon
 	 */
 	private double distToTarget;
 	
 	/**
-	 * Vecteur correspondant à la distance entre le pigeon et la cible
+	 * Vecteur correspondent ï¿½ la distance entre le pigeon et la cible
 	 */
     private Vector2D v_distToTarget;
     
@@ -89,12 +89,12 @@ public class Pigeon {
     private int indexFood;
     
     /**
-     * Boolean indiquant si le pigeon a peur ou s'il se déplace normalement
+     * Boolean indiquant si le pigeon a peur ou s'il se dï¿½place normalement
      */
     private boolean isPanicking;
     
     /**
-     * LocalTime correspondant a une pause de temps entre deux actions de peur
+     * LocalTime correspondent a une pause de temps entre deux actions de peur
      */
     private LocalTime panickCoolDown;
     
@@ -141,7 +141,7 @@ public class Pigeon {
 	
 	
 	/**
-	 * Méthode permettant de savoir si le pigeon est proche de la nourriture ou pas pour la manger.
+	 * Mï¿½thode permettant de savoir si le pigeon est proche de la nourriture ou pas pour la manger.
 	 */
 	public void eatFood()
 	{
@@ -157,12 +157,12 @@ public class Pigeon {
 				isMoving = false;
 				velocity.Reinitialize();
 				foodEaten++;
-				System.out.println("Le pigeon " + name + " a mangé " + foodEaten);
+				System.out.println("Le pigeon " + name + " a mangï¿½ " + foodEaten);
 				for(int i = 0; i<listFood.size(); i++)
 				{
 					if(targetPos == listFood.get(i).getPosition())
 					{
-						//System.out.println("La nourriture a bien été enlevé");
+						//System.out.println("La nourriture a bien ï¿½tï¿½ enlevï¿½");
 						listFood.remove(i);
 					}
 				}
@@ -180,7 +180,7 @@ public class Pigeon {
 	}
 	
 	/**
-	 * Méthode appelé lorsque le pigeon est paniqué et pour qu'il aille assez loin de la zone de peur
+	 * Mï¿½thode appelï¿½ lorsque le pigeon est paniquï¿½ et pour qu'il aille assez loin de la zone de peur
 	 */
 	public void goPanicking()
 	{
@@ -199,7 +199,7 @@ public class Pigeon {
 	
 	
 	/**
-	 * Méthode appelé pour mettre à jour les champs du pigeon (vitesse, position) lorsque le pigeon est isMoving
+	 * Mï¿½thode appelï¿½ pour mettre ï¿½ jour les champs du pigeon (vitesse, position) lorsque le pigeon est isMoving
 	 * @param timeElapsed : temps entre chaque appel
 	 */
 	public void update(double timeElapsed)
@@ -224,7 +224,7 @@ public class Pigeon {
 	}
 	
 	/**
-	 * Méthode permettant d'avoir une nourriture fraiche pour le pigeon
+	 * Mï¿½thode permettant d'avoir une nourriture fraiche pour le pigeon
 	 * @return Food : une nourriture fraiche
 	 */
 	public Food getFreshest()
@@ -265,7 +265,7 @@ public class Pigeon {
 	}
 	
 	/**
-	 * Permet de mettre à jour l'état du boolean isMoving et isPanicking
+	 * Permet de mettre ï¿½ jour l'ï¿½tat du boolean isMoving et isPanicking
 	 */
 	public void setIsMoving()
 	{

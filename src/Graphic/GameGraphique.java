@@ -31,7 +31,7 @@ import PigeonState.PigeonState;
 
 
 /**
- * Classe qui gère la fenetre principale du jeu
+ * Classe qui gï¿½re la fenetre principale du jeu
  * @author Arnaud
  *
  */
@@ -40,7 +40,7 @@ public class GameGraphique implements MouseListener {
 
 
 	/**
-	 * JFrame correspondant à la fenêtre principal
+	 * JFrame correspondent ï¿½ la fenï¿½tre principal
 	 */
 	private JFrame gameWindow;
 	
@@ -59,7 +59,7 @@ public class GameGraphique implements MouseListener {
 	 */
 	private JLabel namePigeonLabel;
 	/**
-	 * TextField permettant de récupérer le nom du pigeon
+	 * TextField permettant de rï¿½cupï¿½rer le nom du pigeon
 	 */
 	private JTextField namePigeonTF;
 	
@@ -69,7 +69,7 @@ public class GameGraphique implements MouseListener {
 	private JButton addPigeonButton;
 
 	/**
-	 * Font pour avoir les textes en gros caractère
+	 * Font pour avoir les textes en gros caractï¿½re
 	 */
 	private Font fontPrincipal;
 	
@@ -122,7 +122,7 @@ public class GameGraphique implements MouseListener {
 	
 
 	/**
-	 * Méthode qui permet de détecter le clique de la sourie
+	 * Mï¿½thode qui permet de dï¿½tecter le clique de la sourie
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -163,7 +163,7 @@ public class GameGraphique implements MouseListener {
 	}
 	
 	/**
-	 * Méthode permettant d'ajouter un pigeon à l'écran
+	 * Mï¿½thode permettant d'ajouter un pigeon ï¿½ l'ï¿½cran
 	 */
 	public void addPigeonOnScreen()
 	{		
@@ -233,7 +233,7 @@ public class GameGraphique implements MouseListener {
 	}
 	
 	/**
-	 * Méthode permettant d'ajouter une nourriture
+	 * Mï¿½thode permettant d'ajouter une nourriture
 	 * @param x : position x de la nourriture
 	 * @param y : position y de la nourriture
 	 */
