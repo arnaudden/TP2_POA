@@ -14,34 +14,34 @@ import Entity.Food;
 import Entity.Pigeon;
 
 /**
- * Classe qui gère le gamePanel
+ * Classe qui gï¿½re le gamePanel
  * @author Arnaud
  *
  */
 public class DisplayElements extends JPanel {
 
 	/**
-	 * Image correspondant au pigeon 
+	 * Image correspondent au pigeon 
 	 */
 	private BufferedImage imagePigeonRest;
 	
 	/**
-	 * Image correspondant au pain normal
+	 * Image correspondent au pain normal
 	 */
 	private BufferedImage imagePain;
 	
 	/**
-	 * Image correspondant au pain moisi
+	 * Image correspondent au pain moisi
 	 */
 	private BufferedImage imagePainMoisi;
 	
 	/**
-	 * Liste de pigeon présent dans la scène
+	 * Liste de pigeon prï¿½sent dans la scï¿½ne
 	 */
 	private ArrayList<Pigeon> listPigeon;
 	
 	/**
-	 * Liste de nourriture présent dans la scène
+	 * Liste de nourriture prï¿½sent dans la scï¿½ne
 	 */
 	private ArrayList<Food> listFood;
 	
@@ -61,14 +61,14 @@ public class DisplayElements extends JPanel {
 	    }
 	    catch (IOException e)
 	    {
-	      System.out.println("Fichier non trouvé");
+	      System.out.println("Fichier non trouvï¿½");
 	    } 
 	    
 	}
 	
 	/**
-	 * Méthode appelé lors de l'ajout d'un pigeon dans la scène
-	 * @param pig : Pigeon à ajouter
+	 * Mï¿½thode appelï¿½ lors de l'ajout d'un pigeon dans la scï¿½ne
+	 * @param pig : Pigeon ï¿½ ajouter
 	 */
 	public void addPigeon(Pigeon pig)
 	{
@@ -78,8 +78,8 @@ public class DisplayElements extends JPanel {
 	}
 	
 	/**
-	 * méthode appelé lors de l'ajout d'une nourriture
-	 * @param bread : nourriture à ajouter
+	 * mï¿½thode appelï¿½ lors de l'ajout d'une nourriture
+	 * @param bread : nourriture ï¿½ ajouter
 	 */
 	public void addFood(Food bread)
 	{
@@ -97,7 +97,7 @@ public class DisplayElements extends JPanel {
 	}
 	
 	/**
-	 * Appelé pour mettre à jour le GamePanel (déplacement des pigeons
+	 * Appelï¿½ pour mettre ï¿½ jour le GamePanel (dï¿½placement des pigeons
 	 * et apparition/disparition de la nourriture
 	 */
 	@Override
